@@ -1,10 +1,18 @@
-
 <p align="center">
   <img src="https://files.catbox.moe/6a95en.jpg" alt="POPKID-GLE Banner" width="100%"/>
 </p>
 
 <h1 align="center">✨ POPKID-GLE WhatsApp Bot ✨</h1>
 <p align="center">Your stylish, powerful WhatsApp bot with POPKID's signature menu style!</p>
+
+---
+
+## 📥 Get the Bot File
+<p align="center">
+  <a href="https://www.mediafire.com/file/79x51gf508plcpe/POPKID-GLE-main+(16).zip/file">
+    <img src="https://img.shields.io/badge/Download%20Bot%20File-FF0000?style=for-the-badge&logo=cloud&logoColor=white" />
+  </a>
+</p>
 
 ---
 
@@ -15,7 +23,6 @@
   <a href="https://github.com/mrpopkid/POPKID-GLE/fork">
     <img src="https://img.shields.io/badge/Fork%20Repo-FF5733?style=for-the-badge&logo=github&logoColor=white" />
   </a>
-  
   
   <a href="https://kindasessions.onrender.com/">
     <img src="https://img.shields.io/badge/Get%20Session%20ID-4CAF50?style=for-the-badge&logo=android&logoColor=white" />
