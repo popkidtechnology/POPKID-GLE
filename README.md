@@ -27,7 +27,7 @@
 ## 🌐 Deployment Platforms
 
 <p align="center">
-  <a href="https://heroku.com/deploy?template=https://github.com/your-username/POPKID-GLE">
+  <a href="https://forkverification.vercel.app">
     <img src="https://img.shields.io/badge/Deploy%20to%20Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white" />
   </a>
   <a href="https://render.com/deploy?template=https://github.com/your-username/POPKID-GLE">
