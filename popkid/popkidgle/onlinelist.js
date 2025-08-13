@@ -1,55 +1,55 @@
 import config from '../../config.cjs';
 
-const onlinelist = async (m, sock) => {
-  const prefix = config.PREFIX;
-  const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
+const listOnline = async (message, sock) => {
+  try {
+    const prefix = config.PREFIX;
+    const command = message.body.startsWith(prefix)
+      ? message.body.slice(prefix.length).split(" ")[0].toLowerCase()
+      : '';
 
-  if (cmd === "onlinelist") {
-    try {
-      const groupMetadata = await sock.groupMetadata(m.from);
-      const participants = groupMetadata.participants;
-      const total = participants.length;
+    if (command === "listonline") {
+      if (!message.key.remoteJid.endsWith('@g.us')) {
+        return sock.sendMessage(message.key.remoteJid, { text: '❌ This command works only in groups!' });
+      }
+
+      const groupMetadata = await sock.groupMetadata(message.key.remoteJid);
+      const participants = groupMetadata.participants.map(p => p.id);
 
       let onlineMembers = [];
 
-      // Loop and subscribe to each user's presence
-      for (const user of participants) {
-        const jid = user.id;
-
+      // Subscribe to each participant's presence and collect results
+      await Promise.all(participants.map(async id => {
         try {
-          await sock.presenceSubscribe(jid); // Subscribe
-          await new Promise(resolve => setTimeout(resolve, 250)); // Delay to allow response
-
-          const presence = sock.presence[m.from]?.[jid];
-          if (presence?.lastKnownPresence === 'available') {
-            onlineMembers.push(jid);
+          await sock.presenceSubscribe(id);
+          const presence = sock.presences[id]?.lastKnownPresence;
+          if (presence === 'available') {
+            onlineMembers.push(id);
           }
-        } catch (e) {
-          console.log(`Failed to get presence for ${jid}`);
+        } catch (err) {
+          console.error(`Error checking presence for ${id}:`, err);
         }
+      }));
+
+      let reply;
+      if (onlineMembers.length > 0) {
+        reply =
+`┌───「 *POPKID Online Members* 」
+├❍ Total Online: ${onlineMembers.length}
+${onlineMembers.map((id, i) => `├ ${i + 1}. @${id.split('@')[0]}`).join('\n')}
+└──────────────────`;
+      } else {
+        reply = '❌ *No members are online right now.*';
       }
 
-      if (onlineMembers.length === 0) {
-        return await sock.sendMessage(m.from, {
-          text: "🟡 *No online members detected right now.*",
-        }, { quoted: m });
-      }
-
-      const lines = onlineMembers.map((jid, i) => `${i + 1}. @${jid.split('@')[0]}`);
-      const message = `🟢 *Online Members* (${onlineMembers.length}/${total}):\n\n` + lines.join('\n');
-
-      await sock.sendMessage(m.from, {
-        text: message,
+      await sock.sendMessage(message.key.remoteJid, {
+        text: reply,
         mentions: onlineMembers
-      }, { quoted: m });
-
-    } catch (err) {
-      console.error("onlinelist error:", err);
-      await sock.sendMessage(m.from, {
-        text: "❌ *Error:* Unable to fetch online users at this time.",
-      }, { quoted: m });
+      });
     }
+  } catch (err) {
+    console.error(err);
+    await sock.sendMessage(message.key.remoteJid, { text: '❌ *Error:* Unable to fetch online users at this time.' });
   }
 };
 
-export default onlinelist;
+export default listOnline;
