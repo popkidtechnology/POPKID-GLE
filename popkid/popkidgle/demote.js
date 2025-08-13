@@ -1,8 +1,10 @@
 import config from '../../config.cjs';
 
+const cleanJid = jid => jid?.split('@')[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+
 const demote = async (m, gss) => {
   try {
-    const botNumber = await gss.decodeJid(gss.user.id);
+    const botNumber = cleanJid(await gss.decodeJid(gss.user.id));
     const prefix = config.PREFIX;
     const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
     const text = m.body.slice(prefix.length + cmd.length).trim();
@@ -23,7 +25,10 @@ const demote = async (m, gss) => {
     }
 
     const groupMetadata = await gss.groupMetadata(m.from);
-    const participants = groupMetadata.participants;
+    const participants = groupMetadata.participants.map(p => ({
+      ...p,
+      id: cleanJid(p.id)
+    }));
 
     const isBotAdmin = participants.find(p => p.id === botNumber)?.admin;
     if (!isBotAdmin) {
@@ -38,9 +43,9 @@ const demote = async (m, gss) => {
       });
     }
 
-    const sender = m.sender;
-    const isOwner = sender === config.OWNER_NUMBER + '@s.whatsapp.net';
-    const isSudo = config.SUDO?.includes(sender);
+    const sender = cleanJid(m.sender);
+    const isOwner = sender === cleanJid(config.OWNER_NUMBER + '@s.whatsapp.net');
+    const isSudo = config.SUDO?.map(s => cleanJid(s)).includes(sender);
     const isGroupAdmin = participants.find(p => p.id === sender)?.admin;
 
     if (!isOwner && !isSudo && !isGroupAdmin) {
@@ -77,17 +82,6 @@ const demote = async (m, gss) => {
     }
 
     const validUsers = users.filter(Boolean);
-
-    const usernames = await Promise.all(
-      validUsers.map(async (user) => {
-        try {
-          const contact = await gss.getContact(user);
-          return contact.notify || contact.pushname || user.split('@')[0];
-        } catch {
-          return user.split('@')[0];
-        }
-      })
-    );
 
     await gss.groupParticipantsUpdate(m.from, validUsers, 'demote')
       .then(() => {
