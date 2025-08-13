@@ -15,17 +15,25 @@ const ping = async (message, sock) => {
 
     const pingSpeed = (endTime - startTime).toFixed(2);
 
-    // Stylish Popkid Box
-    const pingText = `
-┏━━━━━━━━━━━━━━━━┓
-┃ 🏓 *Pɪɴɢ Sᴘᴇᴇᴅ ᴄʜᴇᴄᴋ* 🏓
-┣━━━━━━━━━━━━━━━━┫
-┃ ⚡ *Latency:* ${pingSpeed} ms
-┃ 📡 *Status:* Online ✅
-┣━━━━━━━━━━━━━━━━┫
-┃ 🔥 Popkid is always fast!
-┗━━━━━━━━━━━━━━━━┛
-    `.trim();
+    // 🔹 Function to create dynamic Popkid box
+    function createPopkidBox(lines) {
+      const maxLength = Math.max(...lines.map(line => line.length));
+      const topBorder = "┌" + "─".repeat(maxLength + 2) + "┐";
+      const bottomBorder = "└" + "─".repeat(maxLength + 2) + "┘";
+      const middle = lines.map(line => "│ " + line.padEnd(maxLength, " ") + " │");
+      return [topBorder, ...middle, bottomBorder].join("\n");
+    }
+
+    // 🔹 Lines for the ping box
+    const pingLines = [
+      "🏓 *Pɪɴɢ Sᴘᴇᴇᴅ Cʜᴇᴄᴋ* 🏓",
+      `⚡ *Latency:* ${pingSpeed} ms`,
+      "📡 *Status:* Online ✅",
+      "🔥 Popkid is always fast!"
+    ];
+
+    // 🔹 Generate the final ping text
+    const pingText = createPopkidBox(pingLines);
 
     // Buttons for quick access
     const buttons = [
