@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://your-image-link-here.com/banner.png" alt="POPKID-GLE Banner" width="100%"/>
+  <img src="https://files.catbox.moe/6a95en.jpg" alt="POPKID-GLE Banner" width="100%"/>
 </p>
 
 <h1 align="center">✨ POPKID-GLE WhatsApp Bot ✨</h1>
