@@ -13,8 +13,8 @@ const config = {
   AUTO_STATUS_REPLY: false,
   AUTO_STATUS_REPLY_MSG: "👋 Hello! I saw your status.",
   // 🤖 GPT/AI API KEYS
-  GPT_API_KEY: process.env.GPT_API_KEY || "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", // Groq key
-  GROQ_API_KEY: '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',
+  GPT_API_KEY: process.env.GPT_API_KEY || "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", // Groq key
+  GROQ_API_KEY: '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',
   WEATHER_API_KEY: "ec32bfa1c6b8ff81a636877b6ba302c8",
   GEMINI_KEY: process.env.GEMINI_KEY || "AIzaSyCUPaxfIdZawsKZKqCqJcC-GWiQPCXKTDc",
   PRINCETECH_APIKEY: "prince_api_tjhv",
