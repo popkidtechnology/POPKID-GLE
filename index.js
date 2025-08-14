@@ -135,9 +135,10 @@ async function start() {
       } else if (connection === "open") {
         console.log(
           chalk.green.bold(`
-╔═══════════════════════════════════════════╗
-║   ✅  POPKID XMD BOT ONLINE & READY 🔥   ║
-╚═══════════════════════════════════════════╝
+╔═══❖•ೋ° °ೋ•❖═══╗
+     ✅  POPKID XMD  
+     BOT ONLINE 🔥
+╚═══❖•ೋ° °ೋ•❖═══╝
 `)
         );
 
@@ -238,14 +239,28 @@ async function init() {
   global.isLiveBioRunning = false;
 
   if (fs.existsSync(credsPath)) {
-    console.log(chalk.green("🔐 Local session found. Starting..."));
+    console.log(
+      chalk.green.bold(`
+╔═══❖•ೋ° °ೋ•❖═══╗
+   🔐 Local session  
+       found 📂
+╚═══❖•ೋ° °ೋ•❖═══╝
+`)
+    );
     await start();
   } else {
     const restored = await downloadSessionData();
     if (restored) {
       await start();
     } else {
-      console.log(chalk.yellow("📸 Starting in QR mode..."));
+      console.log(
+        chalk.yellow.bold(`
+╔═══❖•ೋ° °ೋ•❖═══╗
+  📸 Starting in  
+     QR mode 🖼️
+╚═══❖•ೋ° °ೋ•❖═══╝
+`)
+      );
       useQR = true;
       await start();
     }
